@@ -1,0 +1,45 @@
+classDiagram
+    class TransporteService {
+        -List~Garagem~ _garagens
+        -List~Veiculo~ _veiculos
+        -List~Viagem~ _viagensDoDia
+        +bool JornadaAtiva
+        +CadastrarVeiculo(capacidade) Veiculo
+        +CadastrarGaragem(nome) void
+        +IniciarJornada() void
+        +EncerrarJornada() void
+        +LiberarViagem(origem, destino) void
+        +QuantidadeViagens(origem, destino) int
+        +ListarViagens(origem, destino) List~Viagem~
+        +QuantidadePassageiros(origem, destino) int
+    }
+    class Garagem {
+        -Stack~Veiculo~ _veiculos
+        +string Nome
+        +int QuantidadeVeiculos
+        +int PotencialTransporte
+        +Estacionar(veiculo) void
+        +RetirarProximo() Veiculo
+        +Esvaziar() void
+    }
+    class Veiculo {
+        +int Id
+        +int Capacidade
+        +int ViagensRealizadas
+        +int PassageirosTransportados
+        +RegistrarViagem(passageiros) void
+        +LimparDadosDiarios() void
+    }
+    class Viagem {
+        +int VeiculoId
+        +string Origem
+        +string Destino
+        +int Passageiros
+        +DateTime DataHora
+    }
+    TransporteService "1" o-- "*" Garagem : administra
+    TransporteService "1" o-- "*" Veiculo : cadastra
+    TransporteService "1" o-- "*" Viagem : registra
+    Garagem "1" *-- "0..*" Veiculo : pilha de veículos
+    Viagem "*" --> "1" Veiculo : utiliza
+    Viagem "*" --> "1" Garagem : origem/destino
